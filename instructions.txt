@@ -1,0 +1,31 @@
+python3 -m venv kcmbank
+source kcmbank/bin/activate
+deactivate
+
+# Installing libraries
+pip install -r requirements.txt
+
+# Checking python active libraries
+pip list
+
+# Destruct
+rm -rf kcmbank
+
+# Initializing files
+touch myfile.txt
+echo "Hello World" > myfile.txt
+nano myfile.txt
+
+# Creating folder to contain files
+mkdir myfolder
+
+# Moving files
+mv source_file destination_folder
+
+# Restarting flask app.py
+pkill -f "python.*kcmbank.py"
+python kcmbank.py
+
+or 
+
+pkill -f "python.*kcmbank.py" && python kcmbank.py

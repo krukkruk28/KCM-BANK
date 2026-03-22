@@ -1,0 +1,143 @@
+* {  
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        padding: 20px;
+    }
+
+    .navbar {
+        background-color: darkblue;
+        color: white;
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        border-radius: 8px;
+    }
+
+    .navbar h1 {
+        font-size: 28px;
+    }
+
+    .navbar a {
+        background-color: white;
+        color: darkblue;
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    .navbar a:hover {
+        background-color: #e0e0e0;
+    }
+
+    .container {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .welcome-message {
+        background-color: lightblue;
+        border: 2px solid darkblue;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+
+    .welcome-message h2 {
+        color: darkblue;
+        margin-bottom: 10px;
+    }
+
+    .card {
+        background-color: white;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .card h3 {
+        color: darkblue;
+        margin-bottom: 15px;
+        border-bottom: 2px solid lightblue;
+        padding-bottom: 10px;
+    }
+
+    .info-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+    }
+
+    .info-row:last-child {
+        border-bottom: none;
+    }
+
+    .info-label {
+        font-weight: bold;
+        color: #333;
+    }
+
+    .info-value {
+        color: #666;
+    }
+
+    .balance {
+        font-size: 24px;
+        color: darkgreen;
+        font-weight: bold;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+
+    input[type="text"]:focus,
+    input[type="number"]:focus {
+        outline: none;
+        border-color: darkblue;
+        box-shadow: 0 0 5px rgba(0, 0, 139, 0.3);
+    }
+
+    .btn-submit {
+        width: 100%;
+        padding: 12px;
+        background-color: darkblue;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .btn-submit:hover {
+        background-color: #00008b;
+    }

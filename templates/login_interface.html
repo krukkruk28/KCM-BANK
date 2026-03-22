@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KCM Bank - Dashboard</title>
+    <link rel="stylesheet" href="../static/login_interface.css">
+</head>
+
+<body>
+    <div class="navbar">
+        <h1>KCM BANK</h1>
+        <a href="/logout">Logout</a>
+    </div>
+
+    <div class="container">
+        <div class="welcome-message">
+            <h2>Welcome, {{ username }}!</h2>
+            <p>You have successfully logged in to your account.</p>
+        </div>
+
+        {% if get_flashed_messages() %}
+            <div style="background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 4px; padding: 12px; margin-bottom: 20px;">
+                {% for message in get_flashed_messages() %}
+                    <p style="margin: 0;">{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="card">
+            <h3>Account Information</h3>
+            <div class="info-row">
+                <span class="info-label">Username:</span>
+                <span class="info-value">{{ username }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Account Balance:</span>
+                <span class="balance">${{ "%.2f"|format(balance) }}</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Make a Transaction</h3>
+            <form action="/transaction" method="post">
+                <div class="form-group">
+                    <label for="amount">Enter Amount (+ for deposit, - for withdrawal):</label>
+                    <input type="number" id="amount" name="amount" step="0.01" placeholder="e.g. 500 or -200" required>
+                </div>
+                <button type="submit" class="btn-submit">Submit Transaction</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
