@@ -1,0 +1,157 @@
+/* Base layout */
+body {
+    font-family: "Inter", "Segoe UI", sans-serif;
+    background: rgba(255, 255, 255, 0.852);
+    display: flex;
+    flex-direction: column;            /* stack vertically */
+    align-items: center;               /* center horizontally */
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+/* Header */
+h2.welcome-header {
+    color: rgba(0, 0, 255, 0.882);
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+/* Subtitle */
+body > p {
+    color: #010411eb;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 14px;
+}
+
+/* Container */
+.signup-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+/* Card Form */
+.signup-form {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 30px 25px;
+    width: 340px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+/* Labels */
+label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 6px;
+}
+
+/* Inputs */
+input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 18px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+input:focus {
+    border-color: #2a5298;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.15);
+}
+
+/* Password group */
+.password-group {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 18px;
+}
+
+.password-group input {
+    flex: 1;
+}
+
+/* Toggle button */
+.password-group button {
+    background: #f1f3f6;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.password-group button:hover {
+    background: #e1e5ea;
+}
+
+/* Signup button */
+.signup-button {
+    width: 100%;
+    padding: 13px;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.signup-button:hover {
+    box-shadow: 0 6px 15px rgba(42, 82, 152, 0.4);
+}
+
+/* Messages */
+.signup-success,
+.has-account {
+    margin-top: 15px;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    text-align: center;
+    font-weight: 500;
+    width: 340px;                  /* align with form width */
+}
+
+/* Success */
+.signup-success {
+    background: #eafaf1;
+    color: #1e8449;
+    border-left: 4px solid #2ecc71;
+}
+
+/* Error */
+.has-account {
+    background: #fdecea;
+    color: #922b21;
+    border-left: 4px solid #e74c3c;
+}
+
+/* Back to login */
+.back_to_login {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.back_to_login p {
+    color: #7795b8;
+    margin-bottom: 5px;
+}
+
+.back_to_login a {
+    color: #1033e3f8;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.back_to_login a:hover {
+    text-decoration: underline;
+}

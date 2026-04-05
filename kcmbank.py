@@ -91,6 +91,34 @@ def transaction():
 
     return flask.redirect('/dashboard')
 
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    status = None
+
+    if flask.request.method == "POST":
+        username = flask.request.form.get('username')
+        password = flask.request.form.get('password')
+
+        users = load_users()
+
+        # Check if user already exists
+        if any(user['username'] == username for user in users):
+            status = 'exists'
+        else:
+            # Add new user
+            users.append({
+                "username": username,
+                "password": password,
+                "balance": 0
+            })
+            save_users(users)
+            status = 'success'
+
+            # Optional: auto login after signup
+            flask.session['username'] = username
+
+    return flask.render_template('signup.html', status=status)
+
 @app.route('/logout')
 def logout():
     flask.session.pop('username', None)

@@ -23,5 +23,30 @@
         "username": "alice",
         "password": "alicepassword",
         "balance": 10000
+    },
+    {
+        "username": "Kenneth Pogi",
+        "password": "werawerare",
+        "balance": 0
+    },
+    {
+        "username": "Kenneth Pog",
+        "password": "123456",
+        "balance": 0
+    },
+    {
+        "username": "Uvuvwevwe onyetenwevwe Osas",
+        "password": "123456",
+        "balance": 0
+    },
+    {
+        "username": "asdfasdf",
+        "password": "asdfasdcasdf",
+        "balance": 0
+    },
+    {
+        "username": "TANG INA MO JEPOY DIZON",
+        "password": "ASJDFHAKJSDFJKASDF",
+        "balance": 0
     }
 ]

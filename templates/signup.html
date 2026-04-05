@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KCM Bank - Sign Up</title>
+    <link rel="stylesheet" href="../static/signup.css">
+</head>
+
+<body>
+
+    <h2 class="welcome-header">Hi, Welcome to KCM Bank</h2>
+    <p>Please enter your username and password to access your new account.</p>
+
+    <div class="signup-container">
+        <form class="signup-form" action="/signup" method="post">
+
+            <!-- Username -->
+            <label for="username">User Name</label>
+            <input type="text" id="username" name="username" required>
+
+            <!-- Password -->
+            <label for="password">Password</label>
+            <div class="password-group">
+                <input type="password" id="password" name="password" required>
+                <button type="button" onclick="togglePassword()">Show</button>
+            </div>
+
+            <!-- Submit -->
+            <button type="submit" class="signup-button">Sign Up</button>
+
+        </form>
+    </div>
+
+    <!-- ✅ Feedback Messages -->
+    {% if status == 'success' %}
+    <div class="signup-success">
+        <p>Success! Sign-Up Successful!</p>
+        <p>Proceed to Login to access your account</p>
+    </div>
+    {% elif status == 'exists' %}
+    <div class="has-account">
+        <p>Error! Username already taken.</p>
+    </div>
+    {% endif %}
+
+    <!-- Back to login -->
+    <div class="back_to_login">
+        <p>Already have an account?</p>
+        <a href="/login" class="login-link">Back to Log In</a>
+    </div>
+
+    <!-- JS -->
+    <script>
+        function togglePassword() {
+            const input = document.getElementById("password");
+            const btn = event.target;
+
+            if (input.type === "password") {
+                input.type = "text";
+                btn.textContent = "Hide";
+            } else {
+                input.type = "password";
+                btn.textContent = "Show";
+            }
+        }
+    </script>
+
+</body>
+</html>
