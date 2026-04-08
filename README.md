@@ -59,7 +59,7 @@ pip install -r requirements.txt
 ### Running the Application
 
 ```bash
-python app.py
+python kcmbank.py
 ```
 
 The application will be accessible at: `http://localhost:5000`
@@ -79,7 +79,7 @@ The application will be accessible at: `http://localhost:5000`
 
 ```
 KCM-BANK/
-├── app.py                 # Main Flask application entry point
+├── kcmbank.py                 # Main Flask application entry point
 ├── requirements.txt       # Python dependencies
 ├── templates/            # HTML templates for views
 │   ├── login.html
