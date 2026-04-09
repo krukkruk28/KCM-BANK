@@ -16,8 +16,8 @@ KCM Bank is a lightweight banking application that demonstrates fundamental web 
 
 ## 🛠️ Tech Stack
 
-| Language | Usage | Percentage |
-|----------|-------|-----------|
+| Language | Usage |
+|----------|-------|
 | Python | Backend & Core Logic 
 | SQLLite3 | Database Management
 | HTML | Frontend Markup 
