@@ -1,16 +1,17 @@
 import flask
+import sqlite3
 
 from db import (
-    get_user_by_username,
-    create_user,
+    add_user,
     verify_password,
     update_balance,
-    init_db
+    init_db,
+    get_user_by_username
 )
 
 app = flask.Flask(__name__)
 # app.secret_key = os.getenv("SECRET_KEY")
-app.secret_key = 123456789  # Change this to a secure secret key. It's only for educational purposes, use os.getenvfor production use.
+app.secret_key = "super_secret_key_123"  # Change this to a secure secret key. It's only for educational purposes, use os.getenvfor production use.
 
 # -------------------------------
 # Init DB
@@ -18,7 +19,7 @@ app.secret_key = 123456789  # Change this to a secure secret key. It's only for 
 init_db()
 
 # -------------------------------
-# Routes
+# INITIAL ROUTES
 # -------------------------------
 @app.route('/')
 def home():
@@ -26,15 +27,14 @@ def home():
         return flask.redirect('/dashboard')
     return flask.redirect('/login')
 
-
 # -------------------------------
 # LOGIN
 # -------------------------------
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if flask.request.method == 'POST':
-        username = flask.request.form.get('username')
-        password = flask.request.form.get('password')
+        username = flask.request.form.get('username', '')
+        password = flask.request.form.get('password', '')
 
         user = get_user_by_username(username)
 
@@ -42,10 +42,10 @@ def login():
             flask.session['username'] = username
             return flask.redirect('/dashboard')
 
-        return flask.render_template('login.html', error="Invalid credentials")
+        error = 'Invalid username or password'
+        return flask.render_template('login.html', error=error, username=username)
 
     return flask.render_template('login.html')
-
 
 # -------------------------------
 # SIGNUP
@@ -54,12 +54,13 @@ def login():
 def signup():
     status = None
 
-    if flask.request.method == 'POST':
+    if flask.request.method == "POST":
         username = flask.request.form.get('username')
         password = flask.request.form.get('password')
 
-        success = create_user(
-            "User", "Default",
+        success = add_user(
+            "User",
+            "Default",
             f"{username}@mail.com",
             username,
             password
@@ -73,7 +74,6 @@ def signup():
 
     return flask.render_template('signup.html', status=status)
 
-
 # -------------------------------
 # DASHBOARD
 # -------------------------------
@@ -83,13 +83,11 @@ def dashboard():
         return flask.redirect('/login')
 
     user = get_user_by_username(flask.session['username'])
+    balance = user["balance"] if user else 0
 
-    return flask.render_template(
-        'login_interface.html',
-        username=user["username"],
-        balance=user["balance"]
-    )
-
+    return flask.render_template('login_interface.html',
+                                 username=user["username"],
+                                 balance=balance)
 
 # -------------------------------
 # TRANSACTION
@@ -102,7 +100,7 @@ def transaction():
     try:
         amount = float(flask.request.form['amount'])
     except ValueError:
-        flask.flash("Invalid amount")
+        flask.flash('Invalid amount')
         return flask.redirect('/dashboard')
 
     result = update_balance(flask.session['username'], amount)
@@ -112,10 +110,12 @@ def transaction():
     elif result is None:
         flask.flash("User not found")
     else:
-        flask.flash(f"New balance: {result:.2f}")
+        flask.flash(f"Transaction successful. New balance: {result:.2f}")
 
     return flask.redirect('/dashboard')
 
+    flask.flash(f"Transaction successful. New balance: {new_balance:.2f}")
+    return flask.redirect('/dashboard')
 
 # -------------------------------
 # LOGOUT
@@ -124,7 +124,6 @@ def transaction():
 def logout():
     flask.session.pop('username', None)
     return flask.redirect('/login')
-
 
 # -------------------------------
 # RUN

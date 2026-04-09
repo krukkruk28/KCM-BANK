@@ -18,6 +18,10 @@ def get_connection():
 def hash_password(password: str) -> str:
     return bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
 
+def verify_password(password, hashed):
+    import bcrypt
+    return bcrypt.checkpw(password.encode(), hashed.encode())
+
 # -------------------------------
 # Initialize DB
 # -------------------------------
@@ -33,6 +37,7 @@ def init_db():
             email TEXT UNIQUE NOT NULL,
             username TEXT UNIQUE NOT NULL,
             password TEXT NOT NULL,
+            role TEXT DEFAULT 'user',
             balance REAL DEFAULT 0
         )
         """)
@@ -41,22 +46,66 @@ def init_db():
 # -------------------------------
 # Add User
 # -------------------------------
-def add_user(first_name, last_name, email, username, password):
+def add_user(first_name, last_name, email, username, password, role='user', balance=0):
     try:
         with get_connection() as conn:
             cursor = conn.cursor()
             hashed_password = hash_password(password)
 
             cursor.execute("""
-            INSERT INTO users (first_name, last_name, email, username, password)
-            VALUES (?, ?, ?, ?, ?)
-            """, (first_name, last_name, email, username, hashed_password))
+            INSERT INTO users (first_name, last_name, email, username, password, role, balance)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+            """, (first_name, last_name, email, username, hashed_password, role, balance))
 
             conn.commit()
+
+            user_id = cursor.lastrowid
             print("User added successfully.")
+
+            return user_id
 
     except sqlite3.IntegrityError as e:
         print("Error:", e)
+        return None
+
+# -------------------------------
+# Update Balance
+# -------------------------------
+
+def update_balance(username, amount):
+    with get_connection() as conn:
+        cursor = conn.cursor()
+
+        cursor.execute("SELECT balance FROM users WHERE username = ?", (username,))
+        user = cursor.fetchone()
+
+        if not user:
+            return None
+
+        current_balance = user["balance"]
+        new_balance = current_balance + amount
+
+        # prevent overdraft
+        if new_balance < 0:
+            return "insufficient"
+
+        cursor.execute("""
+            UPDATE users SET balance = ? WHERE username = ?
+        """, (new_balance, username))
+
+        conn.commit()
+
+        return new_balance
+
+# -------------------------------
+# Get user by username
+# -------------------------------
+
+def get_user_by_username(username):
+    with get_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM users WHERE username = ?", (username,))
+        return cursor.fetchone()
 
 # -------------------------------
 # Add Default Admin
@@ -70,9 +119,9 @@ def add_admin_user():
 
             cursor.execute("""
             INSERT OR IGNORE INTO users 
-            (first_name, last_name, email, username, password, balance)
-            VALUES (?, ?, ?, ?, ?, ?)
-            """, ("Admin", "User", "admin@example.com", "admin", hashed_password, 0))
+            (first_name, last_name, email, username, password, role, balance)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+            """, ("Admin", "User", "admin@example.com", "admin", hashed_password, "admin", 0))
 
             conn.commit()
             print("Admin user added (or already exists).")
@@ -110,25 +159,53 @@ def query_users():
         for user in users:
             print(dict(user))
 
+# -------------------------------
+# Query Users - For admin
+# -------------------------------
+
 def query_database():
-    query = input("Enter SQL query: ")
+    query = input("Enter SQL query: ").strip()
+
+    # 🔐 Restrict to SELECT only (safer)
+    if not query.lower().startswith("select"):
+        print("Only SELECT queries are allowed.")
+        return
 
     try:
         with get_connection() as conn:
             cursor = conn.cursor()
             cursor.execute(query)
 
-            # Handle SELECT vs others
-            if query.strip().lower().startswith("select"):
-                rows = cursor.fetchall()
-                for row in rows:
-                    print(dict(row))
-            else:
-                conn.commit()
-                print("Query executed successfully.")
+            rows = cursor.fetchall()
+
+            if not rows:
+                print("No results.")
+                return
+
+            for row in rows:
+                print(dict(row))
 
     except Exception as e:
         print("Error:", e)
+
+# -------------------------------
+# Delete Database - For admin
+# -------------------------------
+
+def delete_database():
+    import os
+
+    confirm = input("⚠️ Are you sure you want to delete the database? (yes/no): ")
+
+    if confirm.lower() != "yes":
+        print("Cancelled.")
+        return
+
+    if os.path.exists(DB_NAME):
+        os.remove(DB_NAME)
+        print("Database deleted.")
+    else:
+        print("Database not found.")
 
 # -------------------------------
 # CLI
@@ -140,6 +217,7 @@ if __name__ == "__main__":
     parser.add_argument('--delete-user', type=int, help="Delete user by ID")
     parser.add_argument('--query-users', action='store_true', help="Show all users")
     parser.add_argument('--query-database', action='store_true', help="Run custom SQL query")
+    parser.add_argument('--delete-database', action='store_true', help="Delete the entire database")
 
     args = parser.parse_args()
 
@@ -157,3 +235,6 @@ if __name__ == "__main__":
 
     if args.query_database:
         query_database()
+
+    if args.delete_database:
+        delete_database()
