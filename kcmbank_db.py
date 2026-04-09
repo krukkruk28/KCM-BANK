@@ -55,13 +55,21 @@ def signup():
     status = None
 
     if flask.request.method == "POST":
+        first_name = flask.request.form.get('firstname')
+        last_name = flask.request.form.get('lastname')
+        email = flask.request.form.get('email')
         username = flask.request.form.get('username')
         password = flask.request.form.get('password')
 
+        # 🔍 Basic validation
+        if not all([first_name, last_name, email, username, password]):
+            status = "missing"
+            return flask.render_template('signup.html', status=status)
+
         success = add_user(
-            "User",
-            "Default",
-            f"{username}@mail.com",
+            first_name,
+            last_name,
+            email,
             username,
             password
         )

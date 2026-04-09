@@ -9,3 +9,5 @@ python db.py --query-users
 
 # delete user
 python db.py --delete-user # user_no.
+
+"python.*kcmbank_db.py" && python kcmbank_db.py

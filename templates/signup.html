@@ -10,10 +10,26 @@
 <body>
 
     <h2 class="welcome-header">Hi, Welcome to KCM Bank</h2>
-    <p>Please enter your username and password to access your new account.</p>
+    <p>Please completely fill up the form to access your new account</p>
 
     <div class="signup-container">
         <form class="signup-form" action="/signup" method="post">
+
+            <!--First Name-->
+            <label for="firstname">First Name</label>
+            <input type="text" id="firstname" name="firstname" required>
+
+            <!--Last Name-->
+            <label for="lastname">Last Name</label>
+            <input type="text" id="lastname" name="lastname" required>
+
+            <!--Email-->
+            <label for="email">Email Address</label>
+            <input type="email" id="email"
+                name="email"
+                required
+                pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"
+                title="Enter a valid email (e.g., user@example.com)">
 
             <!-- Username -->
             <label for="username">User Name</label>
