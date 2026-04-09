@@ -2,3 +2,5 @@ requests
 flask
 numpy
 Django
+bcrypt
+

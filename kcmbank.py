@@ -1,9 +1,11 @@
 import flask
 import json
 import os
+import sqlite3
+from db import get_connection, hash_password
 
 app = flask.Flask(__name__)
-app.secret_key = '123456789'  # Change this to a secure secret key
+# app.secret_key = os.getenv("SECRET_KEY")
 
 # Load user data
 def load_users():

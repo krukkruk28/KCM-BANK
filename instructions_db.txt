@@ -1,0 +1,11 @@
+# initialize DB
+python db.py
+
+# add admin
+python db.py --add-admin
+
+# view users
+python db.py --query-users
+
+# delete user
+python db.py --delete-user # user_no.

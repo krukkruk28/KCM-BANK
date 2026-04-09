@@ -1,77 +1,74 @@
 /* Base layout */
 body {
-    font-family: "Inter", "Segoe UI", sans-serif;
-    background: rgba(255, 255, 255, 0.852);
-    display: flex;
-    flex-direction: column;            /* stack vertically */
-    align-items: center;               /* center horizontally */
-    justify-content: center;
-    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    padding: 20px;
     margin: 0;
 }
 
 /* Header */
 h2.welcome-header {
-    color: rgba(0, 0, 255, 0.882);
-    margin-bottom: 8px;
-    text-align: center;
+    color: darkblue;
+    margin-bottom: 10px;
+    text-align: left;
+    font-size: 24px;
 }
 
 /* Subtitle */
 body > p {
-    color: #010411eb;
+    color: #333;
     margin-bottom: 20px;
-    text-align: center;
+    text-align: left;
     font-size: 14px;
 }
 
 /* Container */
 .signup-container {
-    display: flex;
-    justify-content: center;
-    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
 }
 
-/* Card Form */
+/* Card Form (match .card from #1) */
 .signup-form {
     background: #ffffff;
-    border-radius: 16px;
-    padding: 30px 25px;
-    width: 340px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 /* Labels */
 label {
     display: block;
-    font-size: 12px;
-    font-weight: 600;
-    color: #444;
-    margin-bottom: 6px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
 }
 
 /* Inputs */
 input {
     width: 100%;
-    padding: 12px;
-    margin-bottom: 18px;
-    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 4px;
     border: 1px solid #ddd;
     font-size: 14px;
     box-sizing: border-box;
 }
 
+/* Input focus */
 input:focus {
-    border-color: #2a5298;
     outline: none;
-    box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.15);
+    border-color: darkblue;
+    box-shadow: 0 0 5px rgba(0, 0, 139, 0.3);
 }
 
 /* Password group */
 .password-group {
     display: flex;
     gap: 8px;
-    margin-bottom: 18px;
+    margin-bottom: 15px;
 }
 
 .password-group input {
@@ -80,33 +77,32 @@ input:focus {
 
 /* Toggle button */
 .password-group button {
-    background: #f1f3f6;
-    border: none;
+    background: white;
+    border: 1px solid #ddd;
     padding: 10px;
-    border-radius: 8px;
-    font-size: 12px;
+    border-radius: 4px;
     cursor: pointer;
 }
 
 .password-group button:hover {
-    background: #e1e5ea;
+    background: #e0e0e0;
 }
 
 /* Signup button */
 .signup-button {
     width: 100%;
-    padding: 13px;
-    border-radius: 10px;
+    padding: 12px;
+    border-radius: 4px;
     border: none;
-    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    background-color: darkblue;
     color: #fff;
-    font-size: 15px;
-    font-weight: 600;
+    font-size: 16px;
+    font-weight: bold;
     cursor: pointer;
 }
 
 .signup-button:hover {
-    box-shadow: 0 6px 15px rgba(42, 82, 152, 0.4);
+    background-color: #00008b;
 }
 
 /* Messages */
@@ -115,24 +111,25 @@ input:focus {
     margin-top: 15px;
     padding: 12px;
     border-radius: 8px;
-    font-size: 13px;
+    font-size: 15px;
+    font-weight: 800;
+    width: 100%;
     text-align: center;
-    font-weight: 500;
-    width: 340px;                  /* align with form width */
 }
 
 /* Success */
 .signup-success {
     background: #eafaf1;
     color: #1e8449;
-    border-left: 4px solid #2ecc71;
+    border: 2px solid darkblue;
 }
 
 /* Error */
 .has-account {
     background: #fdecea;
     color: #922b21;
-    border-left: 4px solid #e74c3c;
+    border: 2px solid darkblue;
+    font-size: 15px;
 }
 
 /* Back to login */
@@ -142,13 +139,13 @@ input:focus {
 }
 
 .back_to_login p {
-    color: #7795b8;
+    color: #333;
     margin-bottom: 5px;
 }
 
 .back_to_login a {
-    color: #1033e3f8;
-    font-weight: 500;
+    color: darkblue;
+    font-weight: bold;
     text-decoration: none;
 }
 

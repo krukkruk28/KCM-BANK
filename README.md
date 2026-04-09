@@ -10,6 +10,7 @@ KCM Bank is a lightweight banking application that demonstrates fundamental web 
 
 - **User Authentication**: Secure login system with session management
 - **CRUD Operations**: Create, Read, Update, and Delete banking records
+- **Database Integration**: Uses SQLite for data storage and management
 - **Responsive UI**: Clean and intuitive user interface
 - **Flask Backend**: Lightweight Python web framework for efficient backend logic
 
@@ -17,11 +18,11 @@ KCM Bank is a lightweight banking application that demonstrates fundamental web 
 
 | Language | Usage | Percentage |
 |----------|-------|-----------|
-| Python | Backend & Core Logic | 96.1% |
-| HTML | Frontend Markup | 0.5% |
-| CSS | Styling & Layout | 0.4% |
-| JavaScript | Client-side Interactivity | 0.5% |
-| C / Cython | Performance Optimization | 2.0% |
+| Python | Backend & Core Logic 
+| SQLLite3 | Database Management
+| HTML | Frontend Markup 
+| CSS | Styling & Layout
+| JavaScript | Client-side Interactivity 
 
 **Core Framework**: Flask (Python)
 
@@ -29,7 +30,7 @@ KCM Bank is a lightweight banking application that demonstrates fundamental web 
 
 ### Prerequisites
 
-- Python 3.8 or higher
+- Python 3.10 or higher
 - pip (Python package manager)
 - Virtual environment (recommended)
 
@@ -59,7 +60,11 @@ pip install -r requirements.txt
 ### Running the Application
 
 ```bash
+<<<<<<< HEAD
 python kcmbank.py
+=======
+python kcmbank_db.py
+>>>>>>> ed3e55b (Integrated sqllite3 integration)
 ```
 
 The application will be accessible at: `http://localhost:5000`
@@ -79,18 +84,28 @@ The application will be accessible at: `http://localhost:5000`
 
 ```
 KCM-BANK/
+<<<<<<< HEAD
 ├── kcmbank.py                 # Main Flask application entry point
+=======
+├── kcmbank_db.py          # Main Flask application entry point with sqlite3 integration
+├── kcmbank.py             # Original Flask application (without sqlite3) - Sample only
+├── db.py                  # Database connection and operations
+├── usersdb.json           # Simulated user database (for demonstration)
+>>>>>>> ed3e55b (Integrated sqllite3 integration)
 ├── requirements.txt       # Python dependencies
+├── .Dockerfile            # Docker configuration
 ├── templates/            # HTML templates for views
 │   ├── login.html
-│   ├── dashboard.html
-│   └── ...
+│   ├── login_interface.html
+│   └── signup.html
 ├── static/              # Static files (CSS, JS, images)
 │   ├── css/
 │   │   └── style.css
+│   │   └── login.css
+│   │   └── signup.css
 │   ├── js/
 │   └── img/
-├── venv/                # Virtual environment (local only)
+├── kcmbank/            # Virtual environment (local only)
 └── README.md           # This file
 ```
 
