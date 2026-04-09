@@ -100,6 +100,8 @@ KCM-BANK/
 │   └── img/
 ├── kcmbank/            # Virtual environment (local only)
 └── README.md           # This file
+└── instructions_db.txt # Instructions for running the database version
+└── instructions.txt    # Instructions for running the original version
 ```
 
 ## 🔧 Configuration
