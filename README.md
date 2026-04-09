@@ -60,11 +60,7 @@ pip install -r requirements.txt
 ### Running the Application
 
 ```bash
-<<<<<<< HEAD
-python kcmbank.py
-=======
 python kcmbank_db.py
->>>>>>> ed3e55b (Integrated sqllite3 integration)
 ```
 
 The application will be accessible at: `http://localhost:5000`
@@ -84,14 +80,12 @@ The application will be accessible at: `http://localhost:5000`
 
 ```
 KCM-BANK/
-<<<<<<< HEAD
 ├── kcmbank.py                 # Main Flask application entry point
 =======
 ├── kcmbank_db.py          # Main Flask application entry point with sqlite3 integration
 ├── kcmbank.py             # Original Flask application (without sqlite3) - Sample only
 ├── db.py                  # Database connection and operations
 ├── usersdb.json           # Simulated user database (for demonstration)
->>>>>>> ed3e55b (Integrated sqllite3 integration)
 ├── requirements.txt       # Python dependencies
 ├── .Dockerfile            # Docker configuration
 ├── templates/            # HTML templates for views
@@ -144,4 +138,4 @@ Feel free to reach out with questions or suggestions!
 
 ---
 
-**Last Updated**: 2026-04-02
+**Last Updated**: 2026-04-09
