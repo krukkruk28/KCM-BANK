@@ -83,10 +83,11 @@ KCM-BANK/
 ├── kcmbank_db.py          # Main Flask application entry point with sqlite3 integration
 ├── kcmbank.py             # Original Flask application (without sqlite3) - Sample only
 ├── db.py                  # Database connection and operations
+├── test.py                # Test cases for application functionality
 ├── usersdb.json           # Simulated user database (for demonstration)
 ├── requirements.txt       # Python dependencies
 ├── .Dockerfile            # Docker configuration
-├── templates/            # HTML templates for views
+├── templates/             # HTML templates for views
 │   ├── login.html
 │   ├── login_interface.html
 │   └── signup.html
