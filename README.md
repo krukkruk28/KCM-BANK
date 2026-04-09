@@ -80,8 +80,7 @@ The application will be accessible at: `http://localhost:5000`
 
 ```
 KCM-BANK/
-├── kcmbank.py                 # Main Flask application entry point
-=======
+├── kcmbank.py             # Main Flask application entry point - For sample only, not used in current version
 ├── kcmbank_db.py          # Main Flask application entry point with sqlite3 integration
 ├── kcmbank.py             # Original Flask application (without sqlite3) - Sample only
 ├── db.py                  # Database connection and operations
