@@ -23,9 +23,6 @@ mkdir myfolder
 mv source_file destination_folder
 
 # Restarting flask app.py
-pkill -f "python.*kcmbank.py"
+pkill -f "python kcmbank_db.py"
+
 python kcmbank.py
-
-or 
-
-pkill -f "python.*kcmbank.py" && python kcmbank.py

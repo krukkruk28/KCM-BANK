@@ -138,6 +138,23 @@
         font-weight: bold;
     }
 
-    .btn-submit:hover {
-        background-color: #00008b;
+    .summary-button {
+        margin-top: 20px;
+        display: flex;
+        justify-content: flex-end; 
+    }
+
+    /* Button styling */
+    .btn {
+        padding: 10px 18px;
+        background-color: #0d2884;
+        color: white;
+        text-decoration: none;
+        border-radius: 6px;
+        font-weight: 500;
+        transition: 0.2s ease;
+    }
+
+    .btn:hover {
+        background-color: #27ae60;
     }

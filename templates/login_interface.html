@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KCM Bank - Dashboard</title>
-    <link rel="stylesheet" href="../static/login_interface.css">
+
+    <!-- ✅ FIXED STATIC PATH -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='login_interface.css') }}">
 </head>
 
 <body>
@@ -14,19 +16,23 @@
     </div>
 
     <div class="container">
+
+        <!-- 🔹 WELCOME -->
         <div class="welcome-message">
             <h2>Welcome, {{ username }}!</h2>
             <p>You have successfully logged in to your account.</p>
         </div>
 
+        <!-- 🔹 FLASH MESSAGES -->
         {% if get_flashed_messages() %}
-            <div style="background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 4px; padding: 12px; margin-bottom: 20px;">
+            <div class="alert">
                 {% for message in get_flashed_messages() %}
-                    <p style="margin: 0;">{{ message }}</p>
+                    <p>{{ message }}</p>
                 {% endfor %}
             </div>
         {% endif %}
 
+        <!-- 🔹 ACCOUNT INFO -->
         <div class="card">
             <h3>Account Information</h3>
             <div class="info-row">
@@ -43,12 +49,43 @@
             <h3>Make a Transaction</h3>
             <form action="/transaction" method="post">
                 <div class="form-group">
-                    <label for="amount">Enter Amount (+ for deposit, - for withdrawal):</label>
-                    <input type="number" id="amount" name="amount" step="0.01" placeholder="e.g. 500 or -200" required>
+                    <label for="amount">Enter Amount (+ deposit / - withdraw):</label>
+                    <input type="number" id="amount" name="amount" step="0.01" required>
                 </div>
                 <button type="submit" class="btn-submit">Submit Transaction</button>
             </form>
         </div>
+
+        <div class="card">
+            <h3>Transaction Summary</h3>
+            <img id="transactionsChart" src="{{ url_for('dashboard.plot_transactions') }}" width="100%">
+        </div>
+
+        <div class="card">
+            <h3>Your Transaction History</h3>
+            <img id="historyChart" src="{{ url_for('dashboard.plot_history') }}" width="100%">
+        </div>
+
+        <div class="card">
+            <h3>Hourly Transactions</h3>
+            <img id="hourlyChart" src="{{ url_for('dashboard.plot_hourly') }}" width="100%">
+        </div>
     </div>
+
+
+    <script>
+        function refreshCharts() {
+            const t = new Date().getTime();
+
+            document.getElementById("transactionsChart").src =
+                "{{ url_for('dashboard.plot_transactions') }}?t=" + t;
+
+            document.getElementById("historyChart").src =
+                "{{ url_for('dashboard.plot_history') }}?t=" + t;
+        }
+
+        setInterval(refreshCharts, 5000);
+    </script>
+
 </body>
 </html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KCM Bank Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='visual.css') }}">
+</head>
+
+<body>
+    <h1>KCM BANK</h1>
+    <h2>Dashboard</h2>
+
+    <!-- Global Transactions -->
+    <section>
+        <h3>Total Transactions</h3>
+        <img id="transactionsChart" src="/plot/transactions.png">
+    </section>
+
+    <!-- User Transaction History -->
+    <section>
+        <h3>Your Transaction History</h3>
+        <img id="historyChart" src="/plot/history.png">
+    </section>
+
+    <!-- 🔁 Auto Refresh
+    <script>
+        function refreshCharts() {
+            const timestamp = new Date().getTime();
+
+            document.getElementById("transactionsChart").src =
+                "/plot/transactions.png?t=" + timestamp;
+
+            document.getElementById("historyChart").src =
+                "/plot/history.png?t=" + timestamp;
+        }
+
+        setInterval(refreshCharts, 3000); // refresh every 3s
+    </script> -->
+
+</body>
+</html>

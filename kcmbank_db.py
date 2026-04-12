@@ -1,5 +1,4 @@
 import flask
-import sqlite3
 from datetime import datetime
 
 from db import (
@@ -11,23 +10,29 @@ from db import (
     get_connection
 )
 
+from Dashboard import dashboard_bp  
+
 app = flask.Flask(__name__)
-# app.secret_key = os.getenv("SECRET_KEY")
-app.secret_key = "super_secret_key_123"  # Change this to a secure secret key. It's only for educational purposes, use os.getenvfor production use.
+app.secret_key = "super_secret_key_123"
 
 # -------------------------------
-# Init DB
+# INIT
 # -------------------------------
 init_db()
 
+# ✅ REGISTER BLUEPRINT
+app.register_blueprint(dashboard_bp)
+
+
 # -------------------------------
-# INITIAL ROUTES
+# HOME
 # -------------------------------
 @app.route('/')
 def home():
     if 'username' in flask.session:
         return flask.redirect('/dashboard')
     return flask.redirect('/login')
+
 
 # -------------------------------
 # LOGIN
@@ -50,6 +55,7 @@ def login():
 
     return flask.render_template('login.html')
 
+
 # -------------------------------
 # SIGNUP
 # -------------------------------
@@ -64,18 +70,11 @@ def signup():
         username = flask.request.form.get('username')
         password = flask.request.form.get('password')
 
-        # 🔍 Basic validation
         if not all([first_name, last_name, email, username, password]):
             status = "missing"
             return flask.render_template('signup.html', status=status)
 
-        success = add_user(
-            first_name,
-            last_name,
-            email,
-            username,
-            password
-        )
+        success = add_user(first_name, last_name, email, username, password)
 
         if success:
             flask.session['username'] = username
@@ -85,25 +84,6 @@ def signup():
 
     return flask.render_template('signup.html', status=status)
 
-# -------------------------------
-# DASHBOARD
-# -------------------------------
-@app.route('/dashboard')
-def dashboard():
-    if 'username' not in flask.session:
-        return flask.redirect('/login')
-
-    user = get_user_by_username(flask.session['username'])
-
-    if not user:
-        flask.session.clear()
-        return flask.redirect('/login')
-
-    return flask.render_template(
-        'login_interface.html',
-        username=user["username"],
-        balance=user["balance"]
-    )
 
 # -------------------------------
 # TRANSACTION
@@ -130,6 +110,7 @@ def transaction():
 
     return flask.redirect('/dashboard')
 
+
 # -------------------------------
 # LOGOUT
 # -------------------------------
@@ -143,7 +124,6 @@ def logout():
 
         if user:
             logout_time = datetime.utcnow()
-
             try:
                 login_dt = datetime.fromisoformat(login_time)
             except Exception:
