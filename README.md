@@ -22,7 +22,7 @@ KCM Bank is a lightweight banking application that demonstrates fundamental web 
 | SQLLite3 | Database Management
 | HTML | Frontend Markup 
 | CSS | Styling & Layout
-| JavaScript | Client-side Interactivity 
+| JavaScript | Client-side Interactivity
 
 **Core Framework**: Flask (Python)
 
@@ -74,7 +74,15 @@ The application will be accessible at: `http://localhost:5000`
    - View account details
    - Update account information
    - Delete accounts
+
 4. **Logout**: Securely logout from your session
+5. **Future enhancements will include**:
+- *Fund transfers
+- *Transaction history
+- *Notifications (text/email) for account activities
+- *Fraud detection mechanisms
+- *Visualization of data (e.g., charts for transactions)
+- *Mobile-friendly version of the application
 
 ## 📁 Project Structure
 
@@ -86,7 +94,8 @@ KCM-BANK/
 ├── test.py                # Test cases for application functionality
 ├── usersdb.json           # Simulated user database (for demonstration)
 ├── requirements.txt       # Python dependencies
-├── .Dockerfile            # Docker configuration
+├── .Dockerfiles           # Docker configuration files (if applicable)
+├── .yaml                  # Kubernetes orchestration configuration files (if applicable)
 ├── templates/             # HTML templates for views
 │   ├── login.html
 │   ├── login_interface.html
@@ -114,9 +123,27 @@ Update configuration settings in `app.py` or create a `.env` file for:
 
 ## 📝 Notes
 
-- This is a demonstration/educational project
+- Due to complexity and domain-specific requirements, this project focuses on demonstrating basic concepts rather than implementing a fully functional banking system
+- The application is too simple for real-world banking use and should not be used in production
 - Login credentials are simulated
-- Not intended for production use
+- Creating a full stack application requires guidance from a cybersecurity expert and banking professionals to ensure security and compliance with regulations
+
+## ⚠️ Security Considerations
+- Passwords are hashed using bcrypt for security
+- SQL queries should be parameterized to prevent SQL injection (not fully implemented in this demo)
+- Session management is basic and should be enhanced for production use
+
+## 📊 Future Works and Enhancements
+- Implement balance management and transaction history
+- Add more robust error handling and input validation especially for database operations
+- Enhance UI/UX with better design and responsiveness
+- To add more features like fund transfers, account statements, etc.
+- To add visualization of data (e.g., charts for transactions)
+- To add notifications for account activities
+- To add fraud detection mechanisms (e.g., flagging suspicious transactions)
+- To create a mobile-friendly version of the application
+- To demonstrate deployment in a web hosting environment (e.g., Heroku, AWS)
+- To use django instead of flask for better scalability and security features
 
 ## 🤝 Contributing
 
@@ -130,7 +157,7 @@ Contributions are welcome! To contribute:
 
 ## 📄 License
 
-This project is open source and available under the MIT License.
+This project is open source and available.
 
 ## 👤 Author
 
