@@ -1,12 +1,14 @@
 import flask
 import sqlite3
+from datetime import datetime
 
 from db import (
     add_user,
     verify_password,
     update_balance,
     init_db,
-    get_user_by_username
+    get_user_by_username,
+    get_connection
 )
 
 app = flask.Flask(__name__)
@@ -40,6 +42,7 @@ def login():
 
         if user and verify_password(password, user["password"]):
             flask.session['username'] = username
+            flask.session['login_time'] = datetime.utcnow().isoformat()
             return flask.redirect('/dashboard')
 
         error = 'Invalid username or password'
@@ -91,11 +94,16 @@ def dashboard():
         return flask.redirect('/login')
 
     user = get_user_by_username(flask.session['username'])
-    balance = user["balance"] if user else 0
 
-    return flask.render_template('login_interface.html',
-                                 username=user["username"],
-                                 balance=balance)
+    if not user:
+        flask.session.clear()
+        return flask.redirect('/login')
+
+    return flask.render_template(
+        'login_interface.html',
+        username=user["username"],
+        balance=user["balance"]
+    )
 
 # -------------------------------
 # TRANSACTION
@@ -122,15 +130,41 @@ def transaction():
 
     return flask.redirect('/dashboard')
 
-    flask.flash(f"Transaction successful. New balance: {new_balance:.2f}")
-    return flask.redirect('/dashboard')
-
 # -------------------------------
 # LOGOUT
 # -------------------------------
 @app.route('/logout')
 def logout():
-    flask.session.pop('username', None)
+    username = flask.session.get('username')
+    login_time = flask.session.get('login_time')
+
+    if username and login_time:
+        user = get_user_by_username(username)
+
+        if user:
+            logout_time = datetime.utcnow()
+
+            try:
+                login_dt = datetime.fromisoformat(login_time)
+            except Exception:
+                login_dt = logout_time
+
+            duration = int((logout_time - login_dt).total_seconds())
+
+            with get_connection() as conn:
+                cursor = conn.cursor()
+                cursor.execute("""
+                    INSERT INTO user_sessions (user_id, login_time, logout_time, duration_seconds)
+                    VALUES (?, ?, ?, ?)
+                """, (
+                    user["id"],
+                    login_time,
+                    logout_time.isoformat(),
+                    duration
+                ))
+                conn.commit()
+
+    flask.session.clear()
     return flask.redirect('/login')
 
 # -------------------------------

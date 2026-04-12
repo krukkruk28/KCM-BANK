@@ -1,6 +1,7 @@
 import sqlite3
 import argparse
 import bcrypt
+from datetime import datetime
 
 DB_NAME = "app.db"
 
@@ -10,6 +11,7 @@ DB_NAME = "app.db"
 def get_connection():
     conn = sqlite3.connect(DB_NAME)
     conn.row_factory = sqlite3.Row
+    conn.execute("PRAGMA foreign_keys = ON")
     return conn
 
 # -------------------------------
@@ -19,8 +21,7 @@ def hash_password(password: str) -> str:
     return bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
 
 def verify_password(password, hashed):
-    import bcrypt
-    return bcrypt.checkpw(password.encode(), hashed.encode())
+    return bcrypt.hashpw(password.encode(), bcrypt.gensalt())
 
 # -------------------------------
 # Initialize DB
@@ -28,19 +29,61 @@ def verify_password(password, hashed):
 def init_db():
     with get_connection() as conn:
         cursor = conn.cursor()
+
         cursor.execute("""
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            first_name TEXT NOT NULL,
-            last_name TEXT NOT NULL,
-            full_name TEXT GENERATED ALWAYS AS (first_name || ' ' || last_name) STORED,
-            email TEXT UNIQUE NOT NULL,
-            username TEXT UNIQUE NOT NULL,
-            password TEXT NOT NULL,
-            role TEXT DEFAULT 'user',
+            first_name TEXT,
+            last_name TEXT,
+            email TEXT UNIQUE,
+            username TEXT UNIQUE,
+            password TEXT,
+            role TEXT CHECK(role IN ('admin','user')) DEFAULT 'user',
             balance REAL DEFAULT 0
         )
         """)
+
+        cursor.execute("""
+        CREATE INDEX IF NOT EXISTS idx_users_username ON users(username)
+        """)
+
+        cursor.execute("""
+        CREATE TABLE IF NOT EXISTS user_sessions (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            login_time TEXT,
+            logout_time TEXT,
+            duration_seconds INTEGER,
+            FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
+        )
+        """)
+
+        cursor.execute("""
+        CREATE TABLE IF NOT EXISTS user_actions (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            action TEXT,
+            timestamp TEXT DEFAULT CURRENT_TIMESTAMP,
+            duration_seconds INTEGER,
+            FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
+        )
+        """)
+
+        cursor.execute("""
+        CREATE TABLE IF NOT EXISTS transactions (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            amount REAL,
+            type TEXT CHECK(type IN ('deposit','withdraw')),
+            timestamp TEXT DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
+        )
+        """)
+
+        cursor.execute("""
+        CREATE INDEX IF NOT EXISTS idx_transactions_user_id ON transactions(user_id)
+        """)
+
         conn.commit()
 
 # -------------------------------
@@ -76,7 +119,7 @@ def update_balance(username, amount):
     with get_connection() as conn:
         cursor = conn.cursor()
 
-        cursor.execute("SELECT balance FROM users WHERE username = ?", (username,))
+        cursor.execute("SELECT id, balance FROM users WHERE username = ?", (username,))
         user = cursor.fetchone()
 
         if not user:
@@ -85,13 +128,23 @@ def update_balance(username, amount):
         current_balance = user["balance"]
         new_balance = current_balance + amount
 
-        # prevent overdraft
         if new_balance < 0:
             return "insufficient"
 
+        # update balance
         cursor.execute("""
-            UPDATE users SET balance = ? WHERE username = ?
-        """, (new_balance, username))
+            UPDATE users SET balance = ? WHERE id = ?
+        """, (new_balance, user["id"]))
+
+        cursor.execute("""
+            INSERT INTO transactions (user_id, amount, type, timestamp)
+            VALUES (?, ?, ?, ?)
+        """, (
+            user["id"],
+            amount,
+            "deposit" if amount > 0 else "withdraw",
+            datetime.utcnow().isoformat()
+        ))
 
         conn.commit()
 
@@ -130,6 +183,23 @@ def add_admin_user():
         print("Error:", e)
 
 # -------------------------------
+# Log Action
+# -------------------------------
+def log_action(user_id, action, duration=None):
+    with get_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute("""
+            INSERT INTO user_actions (user_id, action, timestamp, duration_seconds)
+            VALUES (?, ?, ?, ?)
+        """, (
+            user_id,
+            action,
+            datetime.utcnow().isoformat(),
+            duration
+        ))
+        conn.commit()
+
+# -------------------------------
 # Delete User
 # -------------------------------
 def delete_user(user_id):
@@ -143,21 +213,13 @@ def delete_user(user_id):
         else:
             print("User not found.")
 
-# -------------------------------
-# Query Users
-# -------------------------------
-def query_users():
-    with get_connection() as conn:
-        cursor = conn.cursor()
-        cursor.execute("SELECT * FROM users")
-        users = cursor.fetchall()
 
-        if not users:
-            print("No users found.")
-            return
-
-        for user in users:
-            print(dict(user))
+# -------------------------------
+# Query User ID
+# -------------------------------
+def get_user_id(username):
+    user = get_user_by_username(username)
+    return user["id"] if user else None
 
 # -------------------------------
 # Query Users - For admin
@@ -166,7 +228,6 @@ def query_users():
 def query_database():
     query = input("Enter SQL query: ").strip()
 
-    # 🔐 Restrict to SELECT only (safer)
     if not query.lower().startswith("select"):
         print("Only SELECT queries are allowed.")
         return
@@ -189,7 +250,7 @@ def query_database():
         print("Error:", e)
 
 # -------------------------------
-# Delete Database - For admin
+# Delete Database - For admin (Not advisable in production)
 # -------------------------------
 
 def delete_database():
@@ -229,9 +290,6 @@ if __name__ == "__main__":
 
     if args.delete_user:
         delete_user(args.delete_user)
-
-    if args.query_users:
-        query_users()
 
     if args.query_database:
         query_database()

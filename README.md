@@ -103,6 +103,7 @@ KCM-BANK/
 └── instructions_db.txt # Instructions for running the database version
 └── instructions.txt    # Instructions for running the original version
 └── KCM BANK FLOWCHART.pdf # Flowchart of application logic
+└── Snapshots/           # Screenshots of the application in action
 ```
 
 ## 🔧 Configuration
