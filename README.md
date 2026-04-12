@@ -92,11 +92,10 @@ KCM-BANK/
 │   ├── login_interface.html
 │   └── signup.html
 ├── static/              # Static files (CSS, JS, images)
-│   ├── css/
-│   │   └── style.css
-│   │   └── login.css
-│   │   └── signup.css
-│   ├── js/
+│   └── style.css
+│   └── login.css
+│   └── signup.css
+│   └── js/
 │   └── img/
 ├── kcmbank/            # Virtual environment (local only)
 └── README.md           # This file
